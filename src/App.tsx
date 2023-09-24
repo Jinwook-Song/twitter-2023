@@ -34,16 +34,20 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const init = async () => {
     await auth.authStateReady();
-    setIsLoading(true);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     init();
   }, []);
-  return <>{isLoading ? <Loader /> : <RouterProvider router={router} />}</>;
+  return (
+    <main className='flex h-screen justify-center'>
+      {isLoading ? <Loader /> : <RouterProvider router={router} />}
+    </main>
+  );
 }
 
 export default App;
