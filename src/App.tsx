@@ -4,6 +4,8 @@ import Home from './routes/home';
 import Profile from './routes/profile';
 import Login from './routes/login';
 import CreatAccount from './routes/create-account';
+import { useEffect, useState } from 'react';
+import Loader from './components/Loader';
 
 const router = createBrowserRouter([
   {
@@ -31,11 +33,15 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  const [isLoading, setIsLoading] = useState(false);
+  const init = async () => {
+    setIsLoading(true);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+  return <>{isLoading ? <Loader /> : <RouterProvider router={router} />}</>;
 }
 
 export default App;
