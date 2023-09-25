@@ -7,11 +7,16 @@ import CreatAccount from './routes/create-account';
 import { useEffect, useState } from 'react';
 import Loader from './components/Loader';
 import { auth } from './firebase';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: '',

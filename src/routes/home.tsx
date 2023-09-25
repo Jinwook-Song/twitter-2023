@@ -1,7 +1,16 @@
-import React from 'react';
+import { auth } from '../firebase';
 
 function Home() {
-  return <div>Home</div>;
+  const signOut = async () => {
+    await auth.signOut();
+  };
+
+  return (
+    <div>
+      <h1>Home</h1>
+      <button onClick={signOut}>logout</button>
+    </div>
+  );
 }
 
 export default Home;

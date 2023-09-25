@@ -2,15 +2,15 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { FirebaseError } from 'firebase/app';
+import { LoginForm } from './login';
 
-type FormType = {
+type CreateAccountType = LoginForm & {
   name: string;
-  email: string;
-  password: string;
 };
 
-const DEFULAT_DATA: FormType = {
+const DEFULAT_DATA: CreateAccountType = {
   name: '',
   email: '',
   password: '',
@@ -20,7 +20,7 @@ function CreatAccount() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [form, setForm] = useState<FormType>(DEFULAT_DATA);
+  const [form, setForm] = useState<CreateAccountType>(DEFULAT_DATA);
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -29,6 +29,7 @@ function CreatAccount() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
     if (loading) return;
     const { name, email, password } = form;
     try {
@@ -42,7 +43,9 @@ function CreatAccount() {
       });
       navigate('/');
     } catch (e) {
-      setError(JSON.stringify(e));
+      if (e instanceof FirebaseError) {
+        setError(e.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -91,6 +94,12 @@ function CreatAccount() {
         </button>
       </form>
       {error && <p className='text-red-600 w-full'>{error}</p>}
+      <p>
+        {'Already have an account?'}{' '}
+        <Link className='text-amber-500' to={'/login'}>
+          Log in &rarr;
+        </Link>
+      </p>
     </section>
   );
 }
