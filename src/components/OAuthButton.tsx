@@ -18,7 +18,7 @@ function OAuthButton() {
       onClick={onClick}
       className='px-3 py-1 rounded-2xl shadow-md border-none w-full text-lg active:brightness-105 bg-white text-black flex justify-center items-center gap-x-4'
     >
-      <img className='w-6 h-6' src='/github.svg' alt='github logo' />
+      <img className='w-6 h-6' src='/icons/github.svg' alt='github logo' />
       <span>Continue with Github</span>
     </button>
   );
