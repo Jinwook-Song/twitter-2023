@@ -5,6 +5,7 @@ import { auth } from '../firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import { FirebaseError } from 'firebase/app';
 import { LoginForm } from './login';
+import OAuthButton from '../components/OAuthButton';
 
 type CreateAccountType = LoginForm & {
   name: string;
@@ -100,6 +101,7 @@ function CreatAccount() {
           Log in &rarr;
         </Link>
       </p>
+      <OAuthButton />
     </section>
   );
 }

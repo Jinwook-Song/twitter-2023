@@ -4,6 +4,7 @@ import { BeatLoader } from 'react-spinners';
 import { auth } from '../firebase';
 import { Link, useNavigate } from 'react-router-dom';
 import { FirebaseError } from 'firebase/app';
+import OAuthButton from '../components/OAuthButton';
 
 export type LoginForm = {
   email: string;
@@ -79,6 +80,7 @@ function CreatAccount() {
           Create one &rarr;
         </Link>
       </p>
+      <OAuthButton />
     </section>
   );
 }
