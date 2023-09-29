@@ -38,7 +38,7 @@ function Timeline() {
     };
   }, []);
   return (
-    <div className='flex flex-col gap-y-4'>
+    <div className='flex flex-col gap-y-4 overflow-y-scroll'>
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} {...tweet} />
       ))}
