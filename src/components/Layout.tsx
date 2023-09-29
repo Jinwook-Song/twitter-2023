@@ -13,8 +13,8 @@ function Layout() {
 
   return (
     <>
-      <section className='flex w-full max-w-2xl p-20 gap-x-8'>
-        <aside className='flex flex-col gap-y-8'>
+      <section className='flex flex-col sm:flex-row w-full max-w-2xl p-5 sm:p-20 gap-8'>
+        <aside className='flex flex-row sm:flex-col gap-8'>
           <button className='w-10 h-10 border border-white p-1 rounded-full flex justify-center items-center'>
             <img src='/icons/home.svg' alt='home icon' />
           </button>

@@ -1,11 +1,22 @@
-import { auth, storage } from '../firebase';
-import { ChangeEvent, useState } from 'react';
+import { auth, db, storage } from '../firebase';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { updateProfile } from 'firebase/auth';
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
+import { TweetModel } from '../models/tweet';
+import Tweet from '../components/Tweet';
 
 export default function Profile() {
   const user = auth.currentUser;
   const [avatar, setAvatar] = useState(user?.photoURL);
+  const [tweets, setTweets] = useState<TweetModel[]>([]);
 
   const onAvatarChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.currentTarget;
@@ -21,11 +32,39 @@ export default function Profile() {
       });
     }
   };
+
+  const fetchTweets = async () => {
+    const tweetQuery = query(
+      collection(db, 'tweets'),
+      where('uid', '==', user?.uid),
+      orderBy('createdAt', 'desc'),
+      limit(25)
+    );
+    const snapshot = await getDocs(tweetQuery);
+    const tweets = snapshot.docs.map((doc) => {
+      const { tweet, createdAt, uid, creator, photo } =
+        doc.data() as TweetModel;
+      return {
+        tweet,
+        createdAt,
+        uid,
+        creator,
+        photo,
+        id: doc.id,
+      };
+    });
+    setTweets(tweets);
+  };
+
+  useEffect(() => {
+    fetchTweets();
+  }, []);
+
   return (
     <section className='w-full flex flex-col items-center gap-y-4'>
       <label
         htmlFor='avatar'
-        className='w-16 aspect-square rounded-full flex justify-center items-center border-4 cursor-pointer overflow-hidden'
+        className='w-16 aspect-square rounded-full flex justify-center items-center border-2 cursor-pointer overflow-hidden'
       >
         {avatar ? (
           <img className='object-cover' src={avatar} alt='avatar' />
@@ -49,6 +88,11 @@ export default function Profile() {
         className='hidden'
       />
       <h2>{user?.displayName ?? 'Anonymous'}</h2>
+      <section className='w-full flex flex-col gap-y-4'>
+        {tweets.map((tweet) => (
+          <Tweet key={tweet.id} {...tweet} />
+        ))}
+      </section>
     </section>
   );
 }
