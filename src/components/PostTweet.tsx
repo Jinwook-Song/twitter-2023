@@ -28,9 +28,9 @@ function PostTweet() {
       setLoading(true);
       const doc = await addDoc(collection(db, 'tweets'), {
         tweet,
-        createAt: Date.now(),
         uid: user.uid,
         creator: user.displayName,
+        createdAt: Date.now(),
       });
       if (file) {
         const fileRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
