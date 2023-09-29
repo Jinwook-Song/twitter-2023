@@ -10,8 +10,8 @@ body {
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-button:focus,
 a:focus,
+button:focus,
 input:focus,
 dialog:focus {
   outline: 2px dashed #f59e0b;

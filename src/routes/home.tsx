@@ -1,5 +1,11 @@
+import PostTweet from '../components/PostTweet';
+
 function Home() {
-  return <div>home</div>;
+  return (
+    <>
+      <PostTweet />
+    </>
+  );
 }
 
 export default Home;

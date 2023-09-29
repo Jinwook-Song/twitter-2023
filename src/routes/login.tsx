@@ -1,4 +1,7 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { auth } from '../firebase';
@@ -33,7 +36,12 @@ function CreatAccount() {
     if (loading) return;
     const { email, password } = form;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await sendEmailVerification(userCredential.user);
       navigate('/');
     } catch (e) {
       if (e instanceof FirebaseError) {
