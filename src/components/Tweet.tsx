@@ -2,8 +2,11 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { auth, db, storage } from '../firebase';
 import { TweetModel } from '../models/tweet';
 import { deleteObject, ref } from 'firebase/storage';
+import { useEffect, useState } from 'react';
+import { cls } from '../libs/utils';
 
 function Tweet({ id, uid, creator, tweet, photo }: TweetModel) {
+  const [fullScreen, setFullScreen] = useState(false);
   const user = auth.currentUser;
 
   const onDelete = async () => {
@@ -19,6 +22,16 @@ function Tweet({ id, uid, creator, tweet, photo }: TweetModel) {
       console.error(e);
     }
   };
+
+  const toggleFullScreen = () => {
+    setFullScreen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    return () => {
+      setFullScreen(false);
+    };
+  }, []);
   return (
     <article className='border rounded-md flex p-4'>
       <div className='text-sm basis-3/5 flex flex-col justify-between'>
@@ -37,9 +50,20 @@ function Tweet({ id, uid, creator, tweet, photo }: TweetModel) {
       </div>
 
       {photo && (
-        <div className='basis-2/5'>
+        <div
+          onClick={toggleFullScreen}
+          className={cls(
+            'basis-2/5',
+            fullScreen ? 'fixed w-full h-screen inset-0' : ''
+          )}
+        >
           <img
-            className='aspect-square object-cover rounded-md'
+            className={cls(
+              'rounded-md cursor-pointer w-full h-full',
+              fullScreen
+                ? 'object-contain backdrop-blur-2xl -backdrop-hue-rotate-180'
+                : 'aspect-square object-cover'
+            )}
             src={photo}
             alt={creator}
           />
