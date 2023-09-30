@@ -64,7 +64,7 @@ export default function Profile() {
     <section className='w-full flex flex-col items-center gap-y-4'>
       <label
         htmlFor='avatar'
-        className='w-16 aspect-square rounded-full flex justify-center items-center border-2 cursor-pointer overflow-hidden'
+        className='w-16 aspect-square rounded-full flex justify-center items-center border-2 cursor-pointer overflow-hidden shrink-0'
       >
         {avatar ? (
           <img className='object-cover' src={avatar} alt='avatar' />
