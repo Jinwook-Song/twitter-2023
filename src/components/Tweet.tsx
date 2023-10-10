@@ -29,8 +29,19 @@ function Tweet({ id, uid, creator, tweet, photo }: TweetModel) {
   };
 
   const onDelete = async () => {
+    try {
+      // @ts-ignore
+      DeleteTweet?.postMessage(JSON.stringify(id));
+    } catch (e) {
+      console.error;
+    }
+
     const ok = confirm('Are you sure you want to delete this tweet?');
     if (!ok) return;
+    await deleteTweet(id);
+  };
+
+  const deleteTweet = async (id: string) => {
     try {
       await deleteDoc(doc(db, `tweets/${id}`));
       if (photo) {
@@ -47,6 +58,13 @@ function Tweet({ id, uid, creator, tweet, photo }: TweetModel) {
   };
 
   useEffect(() => {
+    // @ts-ignore
+    window.deleteTweet = (target: string) => {
+      if (target === id) {
+        deleteTweet(target);
+      }
+    };
+
     return () => {
       setEdit(false);
       setFullScreen(false);
@@ -62,16 +80,20 @@ function Tweet({ id, uid, creator, tweet, photo }: TweetModel) {
             <form onSubmit={onUpdate} className='flex gap-x-2'>
               <input
                 required
+                autoFocus
                 className='text-black px-1 rounded-md w-full'
                 onChange={onChange}
                 defaultValue={tweet}
+                maxLength={80}
               />
               <button className='bg-amber-500 text-white rounded-md shadow-md px-1'>
                 SAVE
               </button>
             </form>
           ) : (
-            <h3 className='whitespace-pre-line'>{tweet}</h3>
+            <h3 className='whitespace-pre-line overflow-y-scroll max-h-16'>
+              {tweet}
+            </h3>
           )}
         </div>
         {user?.uid === uid && (

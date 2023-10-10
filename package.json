@@ -9,7 +9,8 @@
     "predeploy": "npm run build",
     "deploy": "firebase deploy",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lt": "lt --port 5173 --subdomain=webveiw"
   },
   "dependencies": {
     "firebase": "^10.4.0",
