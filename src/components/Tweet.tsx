@@ -59,11 +59,7 @@ function Tweet({ id, uid, creator, tweet, photo }: TweetModel) {
 
   useEffect(() => {
     // @ts-ignore
-    window.deleteTweet = (target: string) => {
-      if (target === id) {
-        deleteTweet(target);
-      }
-    };
+    window.deleteTweet = (target: string) => deleteTweet(target);
 
     return () => {
       setEdit(false);
